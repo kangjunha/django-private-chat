@@ -1,0 +1,1 @@
+# django-encrypted-chat

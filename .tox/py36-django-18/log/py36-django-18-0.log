@@ -1,0 +1,9 @@
+actionid: py36-django-18
+msg: getenv
+cmdargs: ['/usr/local/opt/python@2/bin/python2.7', '-m', 'virtualenv', '--python', '/usr/local/bin/python3.6', 'py36-django-18']
+
+Using base prefix '/Library/Frameworks/Python.framework/Versions/3.6'
+New python executable in /Users/kdh/Desktop/chat/django-private-chat/.tox/py36-django-18/bin/python3.6
+Also creating executable in /Users/kdh/Desktop/chat/django-private-chat/.tox/py36-django-18/bin/python
+Installing setuptools, pip, wheel...done.
+Running virtualenv with interpreter /usr/local/bin/python3.6

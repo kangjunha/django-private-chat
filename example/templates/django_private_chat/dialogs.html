@@ -1,0 +1,475 @@
+{# This template is here just to demonstrate how to customize the default one. #}
+{# It has none to very few changes #}
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% block css %}
+{% endblock css %}
+
+{% block content %}
+    <input id="owner_username" type="hidden" value="{{ request.user.username }}">
+    <h3 class="title"> 정보보호 팀 프로젝트 </h3>
+    <!-- <div class="container">
+        <div class="col-md-3">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{% trans "Chat list" %}</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="user-list-div">
+                        <ul style="list-style-type: none;">
+                            {% for dialog in object_list %}
+                                <li>
+                                    {% if dialog.owner == request.user %}
+                                        {% with dialog.opponent.username as username %}
+                                            <a href="{% url 'dialogs_detail' username %}" id="user-{{ username }}"
+                                               class="btn btn-danger">{% trans "Chat with" %} {{ username }}</a>
+                                        {% endwith %}
+                                    {% else %}
+                                        {% with dialog.owner.username as username %}
+                                            <a href="{% url 'dialogs_detail' username %}" id="user-{{ username }}"
+                                               class="btn btn-danger">{% trans "Chat with" %} {{ username }}</a>
+                                        {% endwith %}
+                                    {% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+      -->
+        <div class="col-md-9">
+            <div class="well well-lg">
+                <div class="row">
+                    <div class="col-md-3 col-md-offset-9">
+                    <span class="pull-right" hidden id="typing-text">
+                        <strong>{{ opponent_username }} {% trans "is typing..." %}</strong>
+                    </span>
+                    </div>
+                    <p>
+                        {{ opponent_username }}
+                        {{ number }}
+                    </p>
+
+                    <p class="text-df" id="df-status" style="display: none">{% trans "Diffie-Hellman Complete" %}</p>
+                    <p class="text-success" id="online-status" style="display: none">{% trans "Online" %}</p>
+                    <p class="text-danger" id="offline-status" style="display: none">{% trans "Offline" %}</p>
+
+                    <div class="messages-container">
+                        <div id="messages" class="messages">
+                            {% for msg in active_dialog.messages.all %}
+                                <div class="row  {% if msg.read %}msg-read{% else %}msg-unread{% endif %} {% if msg.sender != request.user %}opponent{% endif %}"
+                                     data-id="{{ msg.id }}">
+                                    <p class="{% if msg.sender == request.user %}pull-left{% else %}pull-right{% endif %}">
+                                        <span class="username">{{ msg.sender.username }}:</span>
+                                        {{ msg.text }}
+                                        <span class="timestamp">&ndash; <span
+                                                data-livestamp="{{ msg.get_formatted_create_datetime }}">{{ msg.get_formatted_create_datetime }}</span></span>
+                                    </p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="add-message">
+                        <div class="form-group">
+                        <textarea id="chat-message" class="form-control message"
+                                  placeholder="{% trans 'Write a message' %}"></textarea>
+                        </div>
+
+                        <div class="form-group clearfix">
+                            <input id="btn-send-message" type="submit" class="btn btn-primary pull-right send-message"
+                                   style="margin-left: 10px;" value="{% trans 'Send' %}"/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/scrollmonitor/1.2.0/scrollMonitor.js"
+            integrity="sha256-BseZlDlA+yL4qu+Voi82iFa5aaifralQEXIjOjaXgeo=" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/CryptoStore/crypto-js/3.1.2/build/rollups/tripledes.js"></script>
+    <script type="text/javascript">
+    function encryptDesCbcPkcs7Padding(message, key) {
+          var keyWords = CryptoJS.enc.Utf8.parse(key);
+          var ivWords = CryptoJS.lib.WordArray.create([0, 0]);
+          var encrypted = CryptoJS.DES.encrypt(message, keyWords, { iv: ivWords});
+
+          return encrypted;//.toString(CryptoJS.enc.Utf8);
+    }
+
+    function decryptDesCbcPkcs7Padding(message, key) {
+          var keyWords = CryptoJS.enc.Utf8.parse(key);
+          var ivWords = CryptoJS.lib.WordArray.create([0, 0]);
+          var decrypted = CryptoJS.DES.decrypt({ciphertext: message}, keyWords, { iv: ivWords });
+          return decrypted.toString(CryptoJS.enc.Utf8);
+    }
+    function encode(plain,key){
+        var base64Coded = window.btoa(unescape(encodeURIComponent(plain)));//encode_1
+        var encrypted = encryptDesCbcPkcs7Padding(base64Coded, key);//encode_2
+        var finalEncrypted = CryptoJS.enc.Base64.stringify(encrypted.ciphertext);//encode_3
+        return finalEncrypted
+    }
+
+    function decode(crypto,key){
+      var base64Decoded = CryptoJS.enc.Base64.parse(crypto); //decode_1
+      var decrypted = decryptDesCbcPkcs7Padding(base64Decoded, key);//decode_2
+      var finalDecrypted = decodeURIComponent(escape(window.atob(decrypted)));
+      return finalDecrypted
+    }
+
+    //text = encode("안녕하세요","1");
+     // "2063c1608d6e0baf80249c42e2be5804"
+    //alert(hash)
+    //alert(text);
+    //alert(decode(text,"1"));
+      //alert("Final encrypted: " + finalEncrypted);
+
+        var g = 14;
+        var send_key = 0
+        var n = 71;
+        var public_key = -1;
+        var secret_key = -1;
+        var base_ws_server_path = "{{ ws_server_path }}";
+        $(document).ready(function () {
+            var websocket = null;
+            var monitor = null;
+
+            function initReadMessageHandler(containerMonitor, elem) {
+                var id = $(elem).data('id');
+                var elementWatcher = containerMonitor.create(elem);
+                elementWatcher.enterViewport(function () {
+                    //var key = 1;
+                    var opponent_username = getOpponnentUsername();
+                    console.log(id);
+                    //console.log(id.split("message:"))
+                    var packet = JSON.stringify({
+                        type: 'read_message',
+                        session_key: '{{ request.session.session_key }}',
+                        username: opponent_username,
+                        message_id: id
+                    });
+                    $(elem).removeClass('msg-unread').addClass('msg-read');
+                    websocket.send(packet);
+                });
+            }
+
+            function initScrollMonitor() {
+                var containerElement = $("#messages");
+                var containerMonitor = scrollMonitor.createContainer(containerElement);
+                if(public_key==-1){
+                    //console.log("안녕");
+                    notshow();
+                    return containerMonitor
+                }
+                else{
+                $('.msg-unread').each(function (i, elem) {
+                    if ($(elem).hasClass('opponent')){
+                        initReadMessageHandler(containerMonitor, elem);
+                    }
+                });
+                return containerMonitor
+              }
+            }
+
+            function getOpponnentUsername() {
+                return "{{ opponent_username }}";
+            }
+
+            // TODO: Use for adding new dialog
+            function addNewUser(packet) {
+                $('#user-list').html('');
+                packet.value.forEach(function (userInfo) {
+                    if (userInfo.username == getUsername()) return;
+                    var tmpl = Handlebars.compile($('#user-list-item-template').html());
+                    $('#user-list').append(tmpl(userInfo))
+                });
+            }
+            function notshow()
+            {
+              var msgElem =
+                  $('<div class="row msg-unread">' +
+                      '<p class="pull-middle">' +
+                      '<span class="admin">관리자 : 지난 대화 내역은 보안상 암호화되어 보여지지 않습니다.</span>' +
+                      ' <span class="timestamp">&ndash; <span data-livestamp="' + "06.08.1997" + '"> ' + "97:08:06" + '</span></span> ' +
+                      '</p> ' +
+                      '</div>');
+              $('#messages').append(msgElem);
+            }
+            function addNewMessage(packet) {
+                var hash_verify = md5(packet.message);
+                if(packet.hash==hash_verify)//52
+                {
+                  //alert("해시값 일치!");
+                  //console.log(packet.message)
+                  var decode_text = decode(packet.message,public_key);
+                  var msg_class = "";
+                  if (packet['sender_name'] == $("#owner_username").val()) {
+                      msg_class = "pull-left";
+                      color = "orange";
+                  } else {
+                      msg_class = "pull-right";
+                      color = "yellow";
+                  }
+                  var msgElem =
+                      $('<div class="row msg-unread" data-id="' + packet.message_id + '">' +
+                          '<p class="' + msg_class + '">' +
+                          '<span class="' + color + '">' + packet['sender_name'] + ': </span>' +
+                          decode_text +  //이 부분 복호화
+                          ' <span class="timestamp">&ndash; <span data-livestamp="' + packet['created'] + '"> ' + packet['created'] + '</span></span> ' +
+                          '</p> ' +
+                          '</div>');
+                  $('#messages').append(msgElem);
+                  //console.log(packet);
+                  scrollToLastMessage()
+                }
+            }
+
+            function scrollToLastMessage() {
+                var $msgs = $('#messages');
+                $msgs.animate({"scrollTop": $msgs.prop('scrollHeight')})
+            }
+
+            function generateMessage(context) {
+                var tmpl = Handlebars.compile($('#chat-message-template').html());
+                return tmpl({msg: context})
+            }
+
+            function setUserOnlineOffline(username, online) {
+                var elem = $("#user-" + username);
+                if (online) {
+                    elem.attr("class", "btn btn-success");
+                } else {
+                    elem.attr("class", "btn btn-danger");
+                }
+            }
+
+            function gone_online() {
+                send_key = 0
+                public_key = -1;
+                secret_key = -1;
+                handshake();
+                //$("#key_num") = 10;
+                $("#offline-status").hide();
+                $("#online-status").show();
+                $("#df-status").show();
+            }
+
+            function gone_offline() {
+                $("#online-status").hide();
+                $("#offline-status").show();
+                $("#df-status").hide();
+            }
+
+            function flash_user_button(username) {
+                var btn = $("#user-" + username);
+                btn.fadeTo(700, 0.1, function () {
+                    $(this).fadeTo(800, 1.0);
+                });
+            }
+
+            function setupChatWebSocket() {
+                var opponent_username = getOpponnentUsername();
+                websocket = new WebSocket(base_ws_server_path + '{{ request.session.session_key }}/' + opponent_username);
+
+                websocket.onopen = function (event) {
+                    var opponent_username = getOpponnentUsername();
+
+                    var onOnlineCheckPacket = JSON.stringify({
+                        type: "check-online",
+                        session_key: '{{ request.session.session_key }}',
+                        username: opponent_username
+                        {#                      Sending username because the user needs to know if his opponent is online #}
+                    });
+                    var onConnectPacket = JSON.stringify({
+                        type: "online",
+                        session_key: '{{ request.session.session_key }}'
+
+                    });
+
+                    console.log('connected, sending:', onConnectPacket);
+                    websocket.send(onConnectPacket);
+                    console.log('checking online opponents with:', onOnlineCheckPacket);
+                    websocket.send(onOnlineCheckPacket);
+                    monitor = initScrollMonitor();
+                };
+
+
+                window.onbeforeunload = function () {
+
+                    var onClosePacket = JSON.stringify({
+                        type: "offline",
+                        session_key: '{{ request.session.session_key }}',
+                        username: opponent_username,
+                        {# Sending username because to let opponnent know that the user went offline #}
+                    });
+                    console.log('unloading, sending:', onClosePacket);
+                    websocket.send(onClosePacket);
+                    websocket.close();
+                };
+
+
+                websocket.onmessage = function (event) {
+                    var packet;
+
+                    try {
+                        packet = JSON.parse(event.data);
+                        //console.log(packet.message);
+                          console.log(packet);
+                    } catch (e) {
+                        console.log(e);
+                    }
+
+                    switch (packet.type) {
+                        case "handshaking":
+                            //console.log(packet.type);
+                            break;
+                        case "new-dialog":
+                            // TODO: add new dialog to dialog_list
+                            break;
+                        case "user-not-found":
+                            // TODO: dispay some kind of an error that the user is not found
+                            break;
+                        case "gone-online":
+                            if (packet.usernames.indexOf(opponent_username) != -1) {
+                                gone_online();
+                            } else {
+                                gone_offline();
+                            }
+                            for (var i = 0; i < packet.usernames.length; ++i) {
+                                setUserOnlineOffline(packet.usernames[i], true);
+                            }
+                            break;
+                        case "gone-offline":
+                            if (packet.username == opponent_username) {
+                                gone_offline();
+                            }
+                            setUserOnlineOffline(packet.username, false);
+                            break;
+                        case "new-message":
+                            var username = packet['sender_name'];
+                           if (username == opponent_username || username == $("#owner_username").val()){
+                                addNewMessage(packet);//2.addNewMessage를 함
+                                if (username == opponent_username) {
+                                    initReadMessageHandler(monitor, $("div[data-id='" + packet['message_id'] + "']"));
+                                }
+                            } else {
+                                if ($("#user-"+username).length == 0){
+                                    var new_button = $(''+
+                                        '<a href="/'+ username + '"' +
+                                        'id="user-'+username+'" class="btn btn-danger">{% trans "Chat with" %} '+username+'</a>');
+                                    $("#user-list-div").find("ul").append()
+                                }
+                                flash_user_button(username);
+
+                            }
+                            break;
+                        case "handshaking-key":
+                            if(secret_key==-1){
+                                handshake();
+                            }
+                            else{
+                                //console.log("public_key :" + public_key)
+                                if (public_key==-1) {
+                                    public_key = Math.pow(packet.key,secret_key);
+                                    public_key = public_key % n;
+                                    console.log("secret_key : " + secret_key);
+                                    console.log("DF_key : "+ public_key);
+                                    handshake();
+                                  }
+                            }
+                        break;
+
+                        case "opponent-typing":
+                            var typing_elem = $('#typing-text');
+                            if (!typing_elem.is(":visible")) {
+                                typing_elem.fadeIn(500);
+                            } else {
+                                typing_elem.stop(true);
+                                typing_elem.fadeIn(0);
+                            }
+                            typing_elem.fadeOut(3000);
+                            break;
+                        case "opponent-read-message":
+                            if (packet['username'] == opponent_username) {
+                                $("div[data-id='" + packet['message_id'] + "']").removeClass('msg-unread').addClass('msg-read');
+                            }
+                            break;
+
+                        default:
+                            console.log('error: ', event)
+                    }
+                }
+            }
+
+            function handshake(){
+                var opponent_username = getOpponnentUsername();
+                //console.log("secret_key : " + secret_key)
+                var random_num = Math.floor(Math.random() * 10) + 1;
+                if(secret_key==-1){
+                  secret_key = random_num
+                  send_key =  Math.pow(g,secret_key);
+                  send_key =  send_key % n;
+                }
+                //console.log("secret_key : " + secret_key)
+                var handShakePacket = JSON.stringify({
+                  type: 'handshaking',
+                  session_key: '{{ request.session.session_key }}',
+                  username : opponent_username,
+                  key : send_key
+                });
+                websocket.send(handShakePacket);
+            }
+
+            function sendMessage(message) { //1.메세지 패킷을 만듬.
+                var opponent_username = getOpponnentUsername();
+                var message_encode = encode(message,public_key);
+                var hash_message = md5(message_encode);
+                var newMessagePacket = JSON.stringify({
+                    type: 'new-message',
+                    session_key: '{{ request.session.session_key }}',
+                    username: opponent_username,
+                    message: message_encode, //이부분 암호화
+                    hash : hash_message
+                });
+                websocket.send(newMessagePacket)
+            }
+
+            $('#chat-message').keypress(function (e) {
+                if (e.which == 13 && this.value) {
+                    sendMessage(this.value);
+                    this.value = "";
+                    return false
+                }
+                else {
+                    var opponent_username = getOpponnentUsername();
+                    var packet = JSON.stringify({
+                        type: 'is-typing',
+                        session_key: '{{ request.session.session_key }}',
+                        username: opponent_username,
+                        typing: true
+                    });
+                    websocket.send(packet);
+                }
+            });
+
+            $('#btn-send-message').click(function (e) {
+                var $chatInput = $('#chat-message');
+                var msg = $chatInput.val();
+                if (!msg) return;
+                sendMessage($chatInput.val());
+                $chatInput.val('')
+            });
+
+            setupChatWebSocket();
+            scrollToLastMessage();
+        });
+
+    </script>
+{% endblock %}

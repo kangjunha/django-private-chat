@@ -1,0 +1,109 @@
+actionid: tox
+msg: packaging
+cmdargs: ['/usr/local/opt/python@2/bin/python2.7', local('/Users/kdh/Desktop/chat/django-private-chat/setup.py'), 'sdist', '--formats=zip', '--dist-dir', local('/Users/kdh/Desktop/chat/django-private-chat/.tox/dist')]
+
+running sdist
+running egg_info
+writing requirements to django_private_chat.egg-info/requires.txt
+writing django_private_chat.egg-info/PKG-INFO
+writing top-level names to django_private_chat.egg-info/top_level.txt
+writing dependency_links to django_private_chat.egg-info/dependency_links.txt
+reading manifest file 'django_private_chat.egg-info/SOURCES.txt'
+reading manifest template 'MANIFEST.in'
+warning: no files found matching '*.png' under directory 'django_private_chat'
+warning: no files found matching '*.gif' under directory 'django_private_chat'
+warning: no files found matching '*jpg' under directory 'django_private_chat'
+warning: no files found matching '*jpeg' under directory 'django_private_chat'
+warning: no files found matching '*svg' under directory 'django_private_chat'
+writing manifest file 'django_private_chat.egg-info/SOURCES.txt'
+running check
+creating django-private-chat-0.1.8
+creating django-private-chat-0.1.8/django_private_chat
+creating django-private-chat-0.1.8/django_private_chat.egg-info
+creating django-private-chat-0.1.8/django_private_chat/management
+creating django-private-chat-0.1.8/django_private_chat/management/commands
+creating django-private-chat-0.1.8/django_private_chat/migrations
+creating django-private-chat-0.1.8/django_private_chat/static
+creating django-private-chat-0.1.8/django_private_chat/static/django_private_chat
+creating django-private-chat-0.1.8/django_private_chat/static/django_private_chat/css
+creating django-private-chat-0.1.8/django_private_chat/static/django_private_chat/js
+creating django-private-chat-0.1.8/django_private_chat/templates
+creating django-private-chat-0.1.8/django_private_chat/templates/django_private_chat
+copying files to django-private-chat-0.1.8...
+copying AUTHORS.rst -> django-private-chat-0.1.8
+copying CONTRIBUTING.rst -> django-private-chat-0.1.8
+copying HISTORY.rst -> django-private-chat-0.1.8
+copying LICENSE -> django-private-chat-0.1.8
+copying MANIFEST.in -> django-private-chat-0.1.8
+copying README.rst -> django-private-chat-0.1.8
+copying setup.cfg -> django-private-chat-0.1.8
+copying setup.py -> django-private-chat-0.1.8
+copying django_private_chat/__init__.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/admin.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/apps.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/channels.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/channels_uvloop.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/handlers.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/models.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/router.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/urls.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/utils.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat/views.py -> django-private-chat-0.1.8/django_private_chat
+copying django_private_chat.egg-info/PKG-INFO -> django-private-chat-0.1.8/django_private_chat.egg-info
+copying django_private_chat.egg-info/SOURCES.txt -> django-private-chat-0.1.8/django_private_chat.egg-info
+copying django_private_chat.egg-info/dependency_links.txt -> django-private-chat-0.1.8/django_private_chat.egg-info
+copying django_private_chat.egg-info/not-zip-safe -> django-private-chat-0.1.8/django_private_chat.egg-info
+copying django_private_chat.egg-info/requires.txt -> django-private-chat-0.1.8/django_private_chat.egg-info
+copying django_private_chat.egg-info/top_level.txt -> django-private-chat-0.1.8/django_private_chat.egg-info
+copying django_private_chat/management/__init__.py -> django-private-chat-0.1.8/django_private_chat/management
+copying django_private_chat/management/commands/__init__.py -> django-private-chat-0.1.8/django_private_chat/management/commands
+copying django_private_chat/management/commands/run_chat_server.py -> django-private-chat-0.1.8/django_private_chat/management/commands
+copying django_private_chat/management/commands/run_chat_server_uvloop.py -> django-private-chat-0.1.8/django_private_chat/management/commands
+copying django_private_chat/migrations/0001_initial.py -> django-private-chat-0.1.8/django_private_chat/migrations
+copying django_private_chat/migrations/0002_message_read.py -> django-private-chat-0.1.8/django_private_chat/migrations
+copying django_private_chat/migrations/__init__.py -> django-private-chat-0.1.8/django_private_chat/migrations
+copying django_private_chat/static/django_private_chat/css/django_private_chat.css -> django-private-chat-0.1.8/django_private_chat/static/django_private_chat/css
+copying django_private_chat/static/django_private_chat/js/django_private_chat.js -> django-private-chat-0.1.8/django_private_chat/static/django_private_chat/js
+copying django_private_chat/templates/django_private_chat/base.html -> django-private-chat-0.1.8/django_private_chat/templates/django_private_chat
+copying django_private_chat/templates/django_private_chat/dialogs.html -> django-private-chat-0.1.8/django_private_chat/templates/django_private_chat
+Writing django-private-chat-0.1.8/setup.cfg
+creating .tox/dist
+creating '.tox/dist/django-private-chat-0.1.8.zip' and adding 'django-private-chat-0.1.8' to it
+adding 'django-private-chat-0.1.8/PKG-INFO'
+adding 'django-private-chat-0.1.8/LICENSE'
+adding 'django-private-chat-0.1.8/CONTRIBUTING.rst'
+adding 'django-private-chat-0.1.8/MANIFEST.in'
+adding 'django-private-chat-0.1.8/setup.py'
+adding 'django-private-chat-0.1.8/HISTORY.rst'
+adding 'django-private-chat-0.1.8/AUTHORS.rst'
+adding 'django-private-chat-0.1.8/setup.cfg'
+adding 'django-private-chat-0.1.8/README.rst'
+adding 'django-private-chat-0.1.8/django_private_chat/models.py'
+adding 'django-private-chat-0.1.8/django_private_chat/channels_uvloop.py'
+adding 'django-private-chat-0.1.8/django_private_chat/handlers.py'
+adding 'django-private-chat-0.1.8/django_private_chat/__init__.py'
+adding 'django-private-chat-0.1.8/django_private_chat/apps.py'
+adding 'django-private-chat-0.1.8/django_private_chat/admin.py'
+adding 'django-private-chat-0.1.8/django_private_chat/utils.py'
+adding 'django-private-chat-0.1.8/django_private_chat/channels.py'
+adding 'django-private-chat-0.1.8/django_private_chat/router.py'
+adding 'django-private-chat-0.1.8/django_private_chat/urls.py'
+adding 'django-private-chat-0.1.8/django_private_chat/views.py'
+adding 'django-private-chat-0.1.8/django_private_chat/migrations/0002_message_read.py'
+adding 'django-private-chat-0.1.8/django_private_chat/migrations/__init__.py'
+adding 'django-private-chat-0.1.8/django_private_chat/migrations/0001_initial.py'
+adding 'django-private-chat-0.1.8/django_private_chat/management/__init__.py'
+adding 'django-private-chat-0.1.8/django_private_chat/management/commands/__init__.py'
+adding 'django-private-chat-0.1.8/django_private_chat/management/commands/run_chat_server.py'
+adding 'django-private-chat-0.1.8/django_private_chat/management/commands/run_chat_server_uvloop.py'
+adding 'django-private-chat-0.1.8/django_private_chat/static/django_private_chat/css/django_private_chat.css'
+adding 'django-private-chat-0.1.8/django_private_chat/static/django_private_chat/js/django_private_chat.js'
+adding 'django-private-chat-0.1.8/django_private_chat/templates/django_private_chat/dialogs.html'
+adding 'django-private-chat-0.1.8/django_private_chat/templates/django_private_chat/base.html'
+adding 'django-private-chat-0.1.8/django_private_chat.egg-info/PKG-INFO'
+adding 'django-private-chat-0.1.8/django_private_chat.egg-info/not-zip-safe'
+adding 'django-private-chat-0.1.8/django_private_chat.egg-info/SOURCES.txt'
+adding 'django-private-chat-0.1.8/django_private_chat.egg-info/requires.txt'
+adding 'django-private-chat-0.1.8/django_private_chat.egg-info/top_level.txt'
+adding 'django-private-chat-0.1.8/django_private_chat.egg-info/dependency_links.txt'
+removing 'django-private-chat-0.1.8' (and everything under it)

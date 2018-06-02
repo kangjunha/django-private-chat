@@ -1,0 +1,26 @@
+actionid: py36-django-18
+msg: getenv
+cmdargs: ['/Users/kdh/Desktop/chat/django-private-chat/.tox/py36-django-18/bin/pip', 'install', 'Django>=1.8,<1.9', '-r/Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt']
+
+Collecting Django<1.9,>=1.8
+  Downloading https://files.pythonhosted.org/packages/96/b9/b4108da1275dc2ac1bba1e87739cb31b3d44339affb83b0e949fb09c2bef/Django-1.8.19-py2.py3-none-any.whl (6.2MB)
+Collecting coverage==4.3.3 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 1))
+  Downloading https://files.pythonhosted.org/packages/76/2b/01787bbf15f33d836a2eaa92432725855ed4ac8d2281bdd78baad26dbf36/coverage-4.3.3-cp36-cp36m-macosx_10_10_x86_64.whl (167kB)
+Collecting mock>=1.0.1 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/e6/35/f187bdf23be87092bd0f1200d43d23076cee4d0dec109f195173fd3ebc79/mock-2.0.0-py2.py3-none-any.whl (56kB)
+Collecting flake8>=2.1.0 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 3))
+  Downloading https://files.pythonhosted.org/packages/b9/dc/14e9d94c770b8c4ef584e906c7583e74864786a58d47de101f2767d50c0b/flake8-3.5.0-py2.py3-none-any.whl (69kB)
+Collecting tox>=1.7.0 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 4))
+  Using cached https://files.pythonhosted.org/packages/e6/41/4dcfd713282bf3213b0384320fa8841e4db032ddcb80bc08a540159d42a8/tox-3.0.0-py2.py3-none-any.whl
+Collecting codecov>=2.0.0 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 5))
+  Downloading https://files.pythonhosted.org/packages/8b/28/4c1950a61c3c5786f0f34d643d0d28ec832433c9a7c0bd157690d4eb1d5f/codecov-2.0.15-py2.py3-none-any.whl
+Collecting django-model-utils==2.6.1 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 6))
+  Downloading https://files.pythonhosted.org/packages/ae/62/8d798e798fcb21d0fde92ece9bd6fd099330e21529deb17e5b349da146d7/django-model-utils-2.6.1.tar.gz
+Collecting django-test-plus==1.0.17 (from -r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 9))
+  Downloading https://files.pythonhosted.org/packages/b9/c7/d63751822ef7514c1c6a154943437d1a3c896ce0511a8c896cdd84e5a509/django-test-plus-1.0.17.tar.gz
+Collecting six>=1.9 (from mock>=1.0.1->-r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 2))
+  Using cached https://files.pythonhosted.org/packages/67/4b/141a581104b1f6397bfa78ac9d43d8ad29a7ca43ea90a2d863fe3056e86a/six-1.11.0-py2.py3-none-any.whl
+Collecting pbr>=0.11 (from mock>=1.0.1->-r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 2))
+  Downloading https://files.pythonhosted.org/packages/2d/9d/7bfab757977067556c7ca5fe437f28e8b8843c95564fca504de79df63b25/pbr-4.0.3-py2.py3-none-any.whl (98kB)
+Collecting pycodestyle<2.4.0,>=2.0.0 (from flake8>=2.1.0->-r /Users/kdh/Desktop/chat/django-private-chat/requirements_test.txt (line 3))
+Operation cancelled by user
